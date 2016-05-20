@@ -23,7 +23,7 @@ drop-cms-preview:
     - preview-data:/root/Dropbox
     - live-data:/home/dropcms/www
   labels:
-    - io.rancher.container.pull_image: always
+    io.rancher.container.pull_image: always
 drop-cms-live:
   image: helgoboss/drop-cms-helgoboss-org
   net: host
@@ -36,14 +36,14 @@ drop-cms-live:
     - preview-data:/root/Dropbox
     - live-data:/home/dropcms/www
   labels:
-    - io.rancher.container.pull_image: always
+    io.rancher.container.pull_image: always
 cache-warmer:
   image: helgoboss/wget-cache-warmer
   net: host
   restart: always
   command: ${HELGOBOSS_ORG_LIVE_FQDN}
   labels:
-    - io.rancher.container.pull_image: always
+    io.rancher.container.pull_image: always
 memcached:
   image: sylvainlasnier/memcached
   net: bridge
@@ -66,7 +66,7 @@ nginx:
     - /var/cache/nginx
     - nginx-certs:/usr/local/nginx/conf/ssl
   labels:
-    - io.rancher.container.pull_image: always
+    io.rancher.container.pull_image: always
 nginx-certs-uploader:
   image: helgoboss/sshd
   net: bridge
@@ -76,4 +76,4 @@ nginx-certs-uploader:
   volumes:
     - nginx-certs:/usr/local/nginx/conf/ssl
   labels:
-    - io.rancher.container.pull_image: always
+    io.rancher.container.pull_image: always
