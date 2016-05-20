@@ -1,0 +1,69 @@
+# As soon as we start using docker-compose 2 syntax, volumes have to be
+# specified like this:
+#
+# volumes:
+#   preview-data: {}
+#   live-data: {}
+#   nginx-certs: {}
+dropbox:
+  image: helgoboss/dropbox:root
+  volumes:
+    - preview-data:/root/Dropbox
+drop-cms-preview:
+  image: helgoboss/drop-cms-helgoboss-org
+  net: host
+  environment:
+    DROPCMS_PORT: '16000'
+    DROPCMS_INTERFACE: '127.0.0.1'
+    DROPCMS_ROOTDIR: '/root/Dropbox/${HELGOBOSS_ORG_DROPBOX_WWW_DIR}'
+    DROPCMS_MEMCACHED_PREFIX: '${HELGOBOSS_ORG_PREVIEW_FQDN}.'
+    DROPCMS_PUBLISH_ENABLED: 'true'
+    DROPCMS_PUBLISH_COMMAND: 'bash /root/warm-cache.sh ${HELGOBOSS_ORG_LIVE_FQDN}'
+  volumes:
+    - preview-data:/root/Dropbox
+    - live-data:/home/dropcms/www
+drop-cms-live:
+  image: helgoboss/drop-cms-helgoboss-org
+  net: host
+  environment:
+    DROPCMS_PORT: '16001'
+    DROPCMS_INTERFACE: '127.0.0.1'
+    DROPCMS_ROOTDIR: '/home/dropcms/www'
+    DROPCMS_MEMCACHED_PREFIX: '${HELGOBOSS_ORG_LIVE_FQDN}.'
+  volumes:
+    - preview-data:/root/Dropbox
+    - live-data:/home/dropcms/www
+cache-warmer:
+  image: helgoboss/wget-cache-warmer
+  net: host
+  restart: always
+  command: ${HELGOBOSS_ORG_LIVE_FQDN}
+memcached:
+  image: sylvainlasnier/memcached
+  net: bridge
+  ports:
+    - 127.0.0.1:11211:11211/tcp
+nginx:
+  image: helgoboss/helgoboss-websites-nginx
+  net: host
+  restart: always
+  environment:
+    HTPASSWD_USER: 'helgoboss'
+    HTPASSWD_PASSWORD: ${HTPASSWD_PASSWORD}
+    HELGOBOSS_ORG_PREVIEW_FQDN: ${HELGOBOSS_ORG_PREVIEW_FQDN}
+    HELGOBOSS_ORG_LIVE_FQDN: ${HELGOBOSS_ORG_LIVE_FQDN}
+    HELGOBOSS_ORG_SSL_CERT_NAME: 'wildcard.helgoboss.org'
+    BENJAMIN_KLUM_COM_PREVIEW_FQDN: ${BENJAMIN_KLUM_COM_PREVIEW_FQDN}
+    BENJAMIN_KLUM_COM_LIVE_FQDN: ${BENJAMIN_KLUM_COM_LIVE_FQDN}
+    BENJAMIN_KLUM_COM_SSL_CERT_NAME: 'wildcard.benjamin-klum.com'
+  volumes:
+  - /var/cache/nginx
+  - nginx-certs:/usr/local/nginx/conf/ssl
+nginx-certs-uploader:
+  image: helgoboss/sshd
+  net: bridge
+  ports:
+    - "2222:22"
+  restart: always
+  volumes:
+    - nginx-certs:/usr/local/nginx/conf/ssl
