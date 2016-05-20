@@ -22,6 +22,8 @@ drop-cms-preview:
   volumes:
     - preview-data:/root/Dropbox
     - live-data:/home/dropcms/www
+  labels:
+    - io.rancher.container.pull_image: always
 drop-cms-live:
   image: helgoboss/drop-cms-helgoboss-org
   net: host
@@ -33,11 +35,15 @@ drop-cms-live:
   volumes:
     - preview-data:/root/Dropbox
     - live-data:/home/dropcms/www
+  labels:
+    - io.rancher.container.pull_image: always
 cache-warmer:
   image: helgoboss/wget-cache-warmer
   net: host
   restart: always
   command: ${HELGOBOSS_ORG_LIVE_FQDN}
+  labels:
+    - io.rancher.container.pull_image: always
 memcached:
   image: sylvainlasnier/memcached
   net: bridge
@@ -57,8 +63,10 @@ nginx:
     BENJAMIN_KLUM_COM_LIVE_FQDN: ${BENJAMIN_KLUM_COM_LIVE_FQDN}
     BENJAMIN_KLUM_COM_SSL_CERT_NAME: 'wildcard.benjamin-klum.com'
   volumes:
-  - /var/cache/nginx
-  - nginx-certs:/usr/local/nginx/conf/ssl
+    - /var/cache/nginx
+    - nginx-certs:/usr/local/nginx/conf/ssl
+  labels:
+    - io.rancher.container.pull_image: always
 nginx-certs-uploader:
   image: helgoboss/sshd
   net: bridge
@@ -67,3 +75,5 @@ nginx-certs-uploader:
   restart: always
   volumes:
     - nginx-certs:/usr/local/nginx/conf/ssl
+  labels:
+    - io.rancher.container.pull_image: always
