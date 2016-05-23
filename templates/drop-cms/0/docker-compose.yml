@@ -4,11 +4,11 @@
 # volumes:
 #   preview-data: {}
 #   live-data: {}
-dropbox:
+dropbox: # content sync
   image: helgoboss/dropbox:root
   volumes:
     - preview-data:/root/Dropbox
-drop-cms-preview:
+drop-cms-preview: # preview content
   image: helgoboss/drop-cms-helgoboss-org
   environment:
     DROPCMS_ROOTDIR: '/root/Dropbox/${DROPBOX_WWW_DIR}'
@@ -19,9 +19,11 @@ drop-cms-preview:
   volumes:
     - preview-data:/root/Dropbox
     - live-data:/home/dropcms/www
+  links:
+    - memcached
   labels:
     io.rancher.container.pull_image: always
-drop-cms-live:
+drop-cms-live: # live content
   image: helgoboss/drop-cms-helgoboss-org
   environment:
     DROPCMS_ROOTDIR: '/home/dropcms/www'
@@ -30,13 +32,30 @@ drop-cms-live:
   volumes:
     - preview-data:/root/Dropbox
     - live-data:/home/dropcms/www
+  links:
+    - memcached
   labels:
     io.rancher.container.pull_image: always
-cache-warmer:
+cache-warmer: # cache invalidation, no waiting times
   image: helgoboss/wget-cache-warmer
   restart: always
   command: ${LIVE_FQDN}
   labels:
     io.rancher.container.pull_image: always
-memcached:
+memcached: # intra-cms caching
   image: sylvainlasnier/memcached
+nginx: # password protection and HTTPS redirection for preview, server/client caching, error pages, domain mapping
+  image: helgoboss/drop-cms-nginx
+  restart: always
+  environment:
+    HTPASSWD_USER: ${HTPASSWD_USER}
+    HTPASSWD_PASSWORD: ${HTPASSWD_PASSWORD}
+    PREVIEW_FQDN: ${PREVIEW_FQDN}
+    LIVE_FQDN: ${LIVE_FQDN}
+  volumes:
+    - /var/cache/nginx
+  links:
+    - drop-cms-preview
+    - drop-cms-live
+  labels:
+    io.rancher.container.pull_image: always

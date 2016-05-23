@@ -7,7 +7,20 @@
       label: "Live FQDN"
       required: true
       type: "string"
-      default: "www.example.org"
+      default: "example.org"
+    - variable: "PREVIEW_FQDN"
+      label: "Preview FQDN"
+      required: true
+      type: "string"
+      default: "preview.example.org"
+    - variable: "HTPASSWD_USER"
+      label: "User in .htpasswd"
+      required: true
+      type: "string"
+    - variable: "HTPASSWD_PASSWORD"
+      label: "Encrypted password in .htpasswd"
+      required: true
+      type: "password"
     - variable: "DROPBOX_WWW_DIR"
       label: "WWW directory in Dropbox"
       required: true
