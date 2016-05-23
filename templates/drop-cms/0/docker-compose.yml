@@ -1,0 +1,42 @@
+# As soon as we start using docker-compose 2 syntax, volumes have to be
+# specified like this:
+#
+# volumes:
+#   preview-data: {}
+#   live-data: {}
+dropbox:
+  image: helgoboss/dropbox:root
+  volumes:
+    - preview-data:/root/Dropbox
+drop-cms-preview:
+  image: helgoboss/drop-cms-helgoboss-org
+  environment:
+    DROPCMS_ROOTDIR: '/root/Dropbox/${DROPBOX_WWW_DIR}'
+    DROPCMS_PUBLISH_ENABLED: 'true'
+    DROPCMS_PUBLISH_COMMAND: 'bash /root/warm-cache.sh ${LIVE_FQDN}'
+    DROPCMS_MEMCACHED_HOST: memcached
+    DROPCMS_MEMCACHED_PREFIX: 'live.'
+  volumes:
+    - preview-data:/root/Dropbox
+    - live-data:/home/dropcms/www
+  labels:
+    io.rancher.container.pull_image: always
+drop-cms-live:
+  image: helgoboss/drop-cms-helgoboss-org
+  environment:
+    DROPCMS_ROOTDIR: '/home/dropcms/www'
+    DROPCMS_MEMCACHED_HOST: memcached
+    DROPCMS_MEMCACHED_PREFIX: 'preview.'
+  volumes:
+    - preview-data:/root/Dropbox
+    - live-data:/home/dropcms/www
+  labels:
+    io.rancher.container.pull_image: always
+cache-warmer:
+  image: helgoboss/wget-cache-warmer
+  restart: always
+  command: ${LIVE_FQDN}
+  labels:
+    io.rancher.container.pull_image: always
+memcached:
+  image: sylvainlasnier/memcached

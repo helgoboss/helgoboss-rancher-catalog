@@ -1,0 +1,15 @@
+.catalog:
+  name: "Drop CMS"
+  version: "v1.0"
+  description: "Drop CMS"
+  questions:
+    - variable: "LIVE_FQDN"
+      label: "Live FQDN"
+      required: true
+      type: "string"
+      default: "www.example.org"
+    - variable: "DROPBOX_WWW_DIR"
+      label: "WWW directory in Dropbox"
+      required: true
+      type: "string"
+      default: "Apps/example.org/www"
