@@ -12,8 +12,7 @@ drop-cms-preview: # preview content
     DROPCMS_MEMCACHED_HOST: memcached
     DROPCMS_MEMCACHED_PREFIX: 'preview.'
   volumes:
-    - drop-cms-data:/mnt/${RELATIVE_PREVIEW_DATA_PATH}
-    - drop-cms-data:/mnt/${RELATIVE_LIVE_DATA_PATH}
+    - drop-cms-data:/mnt
   links:
     - memcached
   labels:
