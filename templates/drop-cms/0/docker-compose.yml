@@ -4,11 +4,11 @@
 # volumes:
 #   drop-cms-data: {}
 drop-cms-preview: # preview content
-  image: helgoboss/drop-cms-helgoboss-org
+  image: ${DROP_CMS_IMAGE_NAME}
   environment:
     DROPCMS_ROOTDIR: '/mnt/${RELATIVE_PREVIEW_DATA_PATH}'
     DROPCMS_PUBLISH_ENABLED: 'true'
-    DROPCMS_PUBLISH_COMMAND: 'bash /root/publish.sh /mnt/${RELATIVE_LIVE_DATA_PATH} ${LIVE_FQDN}'
+    DROPCMS_PUBLISH_COMMAND: 'bash /root/publish.sh /mnt/${RELATIVE_LIVE_DATA_PATH} ${PRIMARY_LIVE_FQDN}'
     DROPCMS_MEMCACHED_HOST: memcached
     DROPCMS_MEMCACHED_PREFIX: 'preview.'
   volumes:
@@ -19,7 +19,7 @@ drop-cms-preview: # preview content
   labels:
     io.rancher.container.pull_image: always
 drop-cms-live: # live content
-  image: helgoboss/drop-cms-helgoboss-org
+  image: ${DROP_CMS_IMAGE_NAME}
   environment:
     DROPCMS_ROOTDIR: /mnt/${RELATIVE_LIVE_DATA_PATH}
     DROPCMS_MEMCACHED_HOST: memcached
@@ -33,7 +33,7 @@ drop-cms-live: # live content
 cache-warmer: # cache invalidation, no waiting times
   image: helgoboss/wget-cache-warmer
   restart: always
-  command: ${LIVE_FQDN}
+  command: ${PRIMARY_LIVE_FQDN}
   labels:
     io.rancher.container.pull_image: always
 memcached: # intra-cms caching
@@ -45,7 +45,8 @@ nginx: # password protection and HTTPS redirection for preview, server/client ca
     HTPASSWD_USER: ${HTPASSWD_USER}
     HTPASSWD_PASSWORD: ${HTPASSWD_PASSWORD}
     PREVIEW_FQDN: ${PREVIEW_FQDN}
-    LIVE_FQDN: ${LIVE_FQDN}
+    PRIMARY_LIVE_FQDN: ${PRIMARY_LIVE_FQDN}
+    SECONDARY_LIVE_FQDN: ${SECONDARY_LIVE_FQDN}
   volumes:
     - /var/cache/nginx
   links:

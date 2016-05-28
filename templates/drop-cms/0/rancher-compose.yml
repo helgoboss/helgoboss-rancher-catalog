@@ -3,9 +3,19 @@
   version: "v1.0"
   description: "Drop CMS"
   questions:
-    - variable: "LIVE_FQDN"
-      label: "Live FQDN"
+    - variable: "DROP_CMS_IMAGE_NAME"
+      label: "Drop CMS image name"
       required: true
+      type: "string"
+      default: "helgoboss/drop-cms-fs-memcached"
+    - variable: "PRIMARY_LIVE_FQDN"
+      label: "Primary live FQDN"
+      required: true
+      type: "string"
+      default: "www.example.org"
+    - variable: "SECONDARY_LIVE_FQDN"
+      label: "Secondary live FQDN (redirected to primary FQDN)"
+      required: false
       type: "string"
       default: "example.org"
     - variable: "RELATIVE_LIVE_DATA_PATH"
