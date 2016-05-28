@@ -8,11 +8,21 @@
       required: true
       type: "string"
       default: "example.org"
+    - variable: "LIVE_DATA_PATH"
+      label: "Path to live data"
+      required: true
+      type: "string"
+      default: "/mnt/drop-cms/live"
     - variable: "PREVIEW_FQDN"
       label: "Preview FQDN"
       required: true
       type: "string"
       default: "preview.example.org"
+    - variable: "PREVIEW_DATA_PATH"
+      label: "Path to preview data"
+      required: true
+      type: "string"
+      default: "/mnt/drop-cms/preview"
     - variable: "HTPASSWD_USER"
       label: "User in .htpasswd"
       required: true
@@ -21,8 +31,3 @@
       label: "Encrypted password in .htpasswd"
       required: true
       type: "password"
-    - variable: "DROPBOX_WWW_DIR"
-      label: "WWW directory in Dropbox"
-      required: true
-      type: "string"
-      default: "Apps/example.org/www"

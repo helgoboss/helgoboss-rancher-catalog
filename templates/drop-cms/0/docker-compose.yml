@@ -2,23 +2,18 @@
 # specified like this:
 #
 # volumes:
-#   preview-data: {}
-#   live-data: {}
-dropbox: # content sync
-  image: helgoboss/dropbox:root
-  volumes:
-    - preview-data:/root/Dropbox
+#   drop-cms-data: {}
 drop-cms-preview: # preview content
   image: helgoboss/drop-cms-helgoboss-org
   environment:
-    DROPCMS_ROOTDIR: '/root/Dropbox/${DROPBOX_WWW_DIR}'
+    DROPCMS_ROOTDIR: ${PREVIEW_DATA_PATH}
     DROPCMS_PUBLISH_ENABLED: 'true'
-    DROPCMS_PUBLISH_COMMAND: 'bash /root/warm-cache.sh ${LIVE_FQDN}'
+    DROPCMS_PUBLISH_COMMAND: 'bash /root/publish.sh ${LIVE_DATA_PATH} ${LIVE_FQDN}'
     DROPCMS_MEMCACHED_HOST: memcached
-    DROPCMS_MEMCACHED_PREFIX: 'live.'
+    DROPCMS_MEMCACHED_PREFIX: 'preview.'
   volumes:
-    - preview-data:/root/Dropbox
-    - live-data:/home/dropcms/www
+    - drop-cms-data:${PREVIEW_DATA_PATH}
+    - drop-cms-data:${LIVE_DATA_PATH}
   links:
     - memcached
   labels:
@@ -26,12 +21,11 @@ drop-cms-preview: # preview content
 drop-cms-live: # live content
   image: helgoboss/drop-cms-helgoboss-org
   environment:
-    DROPCMS_ROOTDIR: '/home/dropcms/www'
+    DROPCMS_ROOTDIR: ${LIVE_DATA_PATH}
     DROPCMS_MEMCACHED_HOST: memcached
-    DROPCMS_MEMCACHED_PREFIX: 'preview.'
+    DROPCMS_MEMCACHED_PREFIX: 'live.'
   volumes:
-    - preview-data:/root/Dropbox
-    - live-data:/home/dropcms/www
+    - drop-cms-data:${LIVE_DATA_PATH}
   links:
     - memcached
   labels:
