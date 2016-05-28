@@ -8,21 +8,21 @@
       required: true
       type: "string"
       default: "example.org"
-    - variable: "LIVE_DATA_PATH"
-      label: "Path to live data"
+    - variable: "RELATIVE_LIVE_DATA_PATH"
+      label: "Path to live data (relative to /mnt)"
       required: true
       type: "string"
-      default: "/mnt/drop-cms/live"
+      default: "drop-cms/live"
     - variable: "PREVIEW_FQDN"
       label: "Preview FQDN"
       required: true
       type: "string"
       default: "preview.example.org"
-    - variable: "PREVIEW_DATA_PATH"
-      label: "Path to preview data"
+    - variable: "RELATIVE_PREVIEW_DATA_PATH"
+      label: "Path to preview data (relative to /mnt)"
       required: true
       type: "string"
-      default: "/mnt/drop-cms/preview"
+      default: "drop-cms/preview"
     - variable: "HTPASSWD_USER"
       label: "User in .htpasswd"
       required: true

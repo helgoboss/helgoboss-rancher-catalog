@@ -6,14 +6,14 @@
 drop-cms-preview: # preview content
   image: helgoboss/drop-cms-helgoboss-org
   environment:
-    DROPCMS_ROOTDIR: ${PREVIEW_DATA_PATH}
+    DROPCMS_ROOTDIR: '/mnt/${RELATIVE_PREVIEW_DATA_PATH}'
     DROPCMS_PUBLISH_ENABLED: 'true'
-    DROPCMS_PUBLISH_COMMAND: 'bash /root/publish.sh ${LIVE_DATA_PATH} ${LIVE_FQDN}'
+    DROPCMS_PUBLISH_COMMAND: 'bash /root/publish.sh /mnt/${RELATIVE_LIVE_DATA_PATH} ${LIVE_FQDN}'
     DROPCMS_MEMCACHED_HOST: memcached
     DROPCMS_MEMCACHED_PREFIX: 'preview.'
   volumes:
-    - drop-cms-data:${PREVIEW_DATA_PATH}
-    - drop-cms-data:${LIVE_DATA_PATH}
+    - drop-cms-data:/mnt/${RELATIVE_PREVIEW_DATA_PATH}
+    - drop-cms-data:/mnt/${RELATIVE_LIVE_DATA_PATH}
   links:
     - memcached
   labels:
@@ -21,11 +21,11 @@ drop-cms-preview: # preview content
 drop-cms-live: # live content
   image: helgoboss/drop-cms-helgoboss-org
   environment:
-    DROPCMS_ROOTDIR: ${LIVE_DATA_PATH}
+    DROPCMS_ROOTDIR: /mnt/${RELATIVE_LIVE_DATA_PATH}
     DROPCMS_MEMCACHED_HOST: memcached
     DROPCMS_MEMCACHED_PREFIX: 'live.'
   volumes:
-    - drop-cms-data:${LIVE_DATA_PATH}
+    - drop-cms-data:/mnt/${RELATIVE_LIVE_DATA_PATH}
   links:
     - memcached
   labels:
