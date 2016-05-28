@@ -1,0 +1,14 @@
+syncthing:
+  image: linuxserver/syncthing
+  environment:
+    PGID: 0
+    PUID: 0
+  volumes:
+    - drop-cms-data:/mnt
+    - syncthing-conf:/config
+  links:
+    - memcached
+  restart: always
+  net: host
+  labels:
+    io.rancher.container.pull_image: always
