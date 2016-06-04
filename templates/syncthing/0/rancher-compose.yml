@@ -1,0 +1,22 @@
+.catalog:
+  name: "Syncthing"
+  version: "v1.0"
+  description: "Syncthing"
+  questions:
+    - variable: "REMOTE_DEVICE_ID"
+      label: "Remote device ID"
+      required: true
+      type: "string"
+    - variable: "REMOTE_FOLDER_ID"
+      label: "Remote folder ID"
+      required: true
+      type: "string"
+    - variable: "RELATIVE_REMOTE_FOLDER_MOUNT_PATH"
+      label: "Remote folder mount path (relative to /mnt)"
+      required: true
+      type: "string"
+    - variable: "VOLUME_NAME"
+      label: "Volume name"
+      required: true
+      type: "string"
+      default: "data"

@@ -1,13 +1,14 @@
 syncthing:
-  image: linuxserver/syncthing
+  image: helgoboss/syncthing
   environment:
     PGID: 0
     PUID: 0
+    REMOTE_DEVICE_ID: ${REMOTE_DEVICE_ID}
+    REMOTE_FOLDER_ID: ${REMOTE_FOLDER_ID}
+    REMOTE_FOLDER_MOUNT_PATH: /mnt/${RELATIVE_REMOTE_FOLDER_MOUNT_PATH}
   volumes:
-    - drop-cms-data:/mnt
+    - ${VOLUME_NAME}:/mnt
     - syncthing-conf:/config
-  links:
-    - memcached
   restart: always
   ports:
     - "22000:22000"
