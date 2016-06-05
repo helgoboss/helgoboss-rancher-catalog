@@ -1,4 +1,0 @@
-.catalog:
-  name: "nginx Syncthing"
-  version: "v1.0"
-  description: "nginx with configuration provided by Syncthing"

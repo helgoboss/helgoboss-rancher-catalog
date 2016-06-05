@@ -1,0 +1,5 @@
+name: nginx
+description: |
+  nginx with flexible configuration
+version: v1.0
+category: Web

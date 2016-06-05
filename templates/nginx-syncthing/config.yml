@@ -1,5 +1,0 @@
-name: nginx Syncthing
-description: |
-  nginx with configuration provided by Syncthing
-version: v1.0
-category: Web

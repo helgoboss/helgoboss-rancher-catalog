@@ -1,8 +1,8 @@
 nginx:
   image: nginx:latest
   volumes:
-    - /mnt/syncthing/nginx/data:/etc/nginx/data
-    - /mnt/syncthing/nginx/nginx.conf:/etc/nginx/nginx.conf
+    - ${NGINX_DATA_HOST_PATH}:/etc/nginx/data
+    - ${NGINX_CONF_HOST_PATH}:/etc/nginx/nginx.conf
   restart: always
   ports:
     - "80:80"
