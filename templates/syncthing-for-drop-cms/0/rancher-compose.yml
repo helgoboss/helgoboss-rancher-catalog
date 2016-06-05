@@ -1,4 +1,0 @@
-.catalog:
-  name: "Syncthing for Drop CMS"
-  version: "v1.0"
-  description: "Syncthing-based file syncing for Drop CMS"
