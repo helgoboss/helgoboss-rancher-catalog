@@ -1,18 +1,14 @@
-# As soon as we start using docker-compose 2 syntax, volumes have to be
-# specified like this:
-#
-# volumes:
-#   drop-cms-data: {}
 drop-cms-preview: # preview content
   image: ${DROP_CMS_IMAGE_NAME}
   environment:
-    DROPCMS_ROOTDIR: '/mnt/${RELATIVE_PREVIEW_DATA_PATH}'
+    DROPCMS_ROOTDIR: '/preview-content'
     DROPCMS_PUBLISH_ENABLED: 'true'
-    DROPCMS_PUBLISH_COMMAND: 'bash /root/publish.sh /mnt/${RELATIVE_LIVE_DATA_PATH} ${PRIMARY_LIVE_FQDN}'
+    DROPCMS_PUBLISH_COMMAND: 'bash /root/publish.sh /live-content ${PRIMARY_LIVE_FQDN}'
     DROPCMS_MEMCACHED_HOST: memcached
     DROPCMS_MEMCACHED_PREFIX: 'preview.'
   volumes:
-    - drop-cms-data:/mnt
+    - ${PREVIEW_CONTENT_HOST_PATH}:/preview-content
+    - drop-cms-live-content:/live-content
   links:
     - memcached
   labels:
@@ -20,11 +16,11 @@ drop-cms-preview: # preview content
 drop-cms-live: # live content
   image: ${DROP_CMS_IMAGE_NAME}
   environment:
-    DROPCMS_ROOTDIR: /mnt/${RELATIVE_LIVE_DATA_PATH}
+    DROPCMS_ROOTDIR: /live-content
     DROPCMS_MEMCACHED_HOST: memcached
     DROPCMS_MEMCACHED_PREFIX: 'live.'
   volumes:
-    - drop-cms-data:/mnt/${RELATIVE_LIVE_DATA_PATH}
+    - ${LIVE_CONTENT_VOLUME_NAME}:/live-content
   links:
     - memcached
   labels:
@@ -41,13 +37,14 @@ nginx: # password protection and HTTPS redirection for preview, server/client ca
   image: helgoboss/drop-cms-nginx
   restart: always
   environment:
-    HTPASSWD_USER: ${HTPASSWD_USER}
-    HTPASSWD_PASSWORD: ${HTPASSWD_PASSWORD}
+    HTPASSWD_PATH: ${HTPASSWD_PATH}
+    CERT_PATH: ${CERT_PATH}
     PREVIEW_FQDN: ${PREVIEW_FQDN}
     PRIMARY_LIVE_FQDN: ${PRIMARY_LIVE_FQDN}
     SECONDARY_LIVE_FQDN: ${SECONDARY_LIVE_FQDN}
   volumes:
     - /var/cache/nginx
+    - ${NGINX_DATA_HOST_PATH}:/etc/nginx/data
   links:
     - drop-cms-preview
     - drop-cms-live

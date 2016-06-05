@@ -18,26 +18,34 @@
       required: false
       type: "string"
       default: "example.org"
-    - variable: "RELATIVE_LIVE_DATA_PATH"
-      label: "Path to live data (relative to /mnt)"
-      required: true
-      type: "string"
       default: "drop-cms/live"
     - variable: "PREVIEW_FQDN"
       label: "Preview FQDN"
       required: true
       type: "string"
       default: "preview.example.org"
-    - variable: "RELATIVE_PREVIEW_DATA_PATH"
-      label: "Path to preview data (relative to /mnt)"
+    - variable: "LIVE_CONTENT_VOLUME_NAME"
+      label: "Name of the volume containing the live content (/live-content)"
       required: true
+      default: "drop-cms-live-content"
       type: "string"
-      default: "drop-cms/preview"
-    - variable: "HTPASSWD_USER"
-      label: "User in .htpasswd"
+    - variable: "PREVIEW_CONTENT_HOST_PATH"
+      label: "Path on host reflecting content for preview (/preview-content)"
       required: true
+      default: "/mnt/syncthing/www"
       type: "string"
-    - variable: "HTPASSWD_PASSWORD"
-      label: "Encrypted password in .htpasswd"
+    - variable: "HTPASSWD_PATH"
+      label: "Path to htpasswd file for preview protection"
       required: true
-      type: "password"
+      default: "/etc/nginx/data/htpasswd"
+      type: "string"
+    - variable: "CERT_PATH"
+      label: "Path to certificate (without .key and .crt extension)"
+      required: false
+      default: "/etc/nginx/data/..."
+      type: "string"
+    - variable: "NGINX_DATA_HOST_PATH"
+      label: "Path on host reflecting /etc/nginx/data"
+      required: true
+      default: "/mnt/syncthing/nginx"
+      type: "string"
