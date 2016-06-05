@@ -5,9 +5,9 @@ syncthing:
     PUID: 0
     REMOTE_DEVICE_ID: ${REMOTE_DEVICE_ID}
     REMOTE_FOLDER_ID: ${REMOTE_FOLDER_ID}
-    REMOTE_FOLDER_MOUNT_PATH: /mnt/${RELATIVE_REMOTE_FOLDER_MOUNT_PATH}
+    REMOTE_FOLDER_MOUNT_PATH: /data/${RELATIVE_REMOTE_FOLDER_MOUNT_PATH}
   volumes:
-    - ${VOLUME_NAME}:/mnt
+    - /mnt/syncthing:/data
     - /root/.config/syncthing
   restart: always
   ports:
