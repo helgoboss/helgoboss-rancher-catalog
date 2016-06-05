@@ -1,4 +1,4 @@
-syncthing:
+nginx:
   image: nginx:latest
   volumes:
     - /var/cache/nginx
