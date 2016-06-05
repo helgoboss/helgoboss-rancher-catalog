@@ -8,7 +8,7 @@ syncthing:
     REMOTE_FOLDER_MOUNT_PATH: /mnt/${RELATIVE_REMOTE_FOLDER_MOUNT_PATH}
   volumes:
     - ${VOLUME_NAME}:/mnt
-    - syncthing-conf:/config
+    - /root/.config/syncthing
   restart: always
   ports:
     - "22000:22000"
