@@ -1,8 +1,6 @@
 syncthing:
   image: helgoboss/syncthing
   environment:
-    PGID: 0
-    PUID: 0
     REMOTE_DEVICE_ID: ${REMOTE_DEVICE_ID}
     REMOTE_FOLDER_ID: ${REMOTE_FOLDER_ID}
     REMOTE_FOLDER_MOUNT_PATH: /data/${RELATIVE_REMOTE_FOLDER_MOUNT_PATH}

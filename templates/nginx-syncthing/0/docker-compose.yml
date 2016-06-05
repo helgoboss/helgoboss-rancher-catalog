@@ -1,0 +1,12 @@
+syncthing:
+  image: nginx:latest
+  volumes:
+    - /var/cache/nginx
+    - /mnt/syncthing/nginx/data:/etc/nginx/data
+    - /mnt/syncthing/nginx/nginx.conf:/etc/nginx/nginx.conf
+  restart: always
+  ports:
+    - "80:80"
+    - "443:443"
+  labels:
+    io.rancher.container.pull_image: always
