@@ -8,9 +8,8 @@ syncthing:
     - /mnt/syncthing:/data
     - /root/.config/syncthing
   restart: always
-  net: host
-  # ports:
-  #   - "22000:22000"
-  #   - "21027:21027/udp"
+  ports:
+    - "22000:22000"
+    - "21027:21027/udp"
   labels:
     io.rancher.container.pull_image: always
