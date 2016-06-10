@@ -1,11 +1,11 @@
 nginx:
   image: nginx:latest
   volumes:
-    - ${NGINX_DATA_HOST_PATH}:/etc/nginx/data
-    - ${NGINX_CONF_HOST_PATH}:/etc/nginx/nginx.conf
+    - ${NGINX_DATA_HOST_PATH}:/mnt/data
   restart: always
   ports:
     - "80:80"
     - "443:443"
   labels:
     io.rancher.container.pull_image: always
+  command: ["nginx", "-g", "daemon off;", "-c", "/mnt/data/nginx.conf"]

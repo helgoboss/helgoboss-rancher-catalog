@@ -4,12 +4,7 @@
   description: "nginx with flexible configuration"
   questions:
     - variable: "NGINX_DATA_HOST_PATH"
-      label: "Path on host reflecting nginx data (/etc/nginx/data)"
+      label: "Path on host reflecting nginx data (/mnt/data)"
       required: true
       type: "string"
       default: "/mnt/syncthing/nginx/data"
-    - variable: "NGINX_CONF_HOST_PATH"
-      label: "Path on host reflecting nginx.conf (/etc/nginx/nginx.conf)"
-      required: true
-      type: "string"
-      default: "/mnt/syncthing/nginx/nginx.conf"
