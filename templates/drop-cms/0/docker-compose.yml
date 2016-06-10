@@ -7,7 +7,7 @@ drop-cms-preview: # preview content
     DROPCMS_MEMCACHED_HOST: memcached
     DROPCMS_MEMCACHED_PREFIX: 'preview.'
   volumes:
-    - ${PREVIEW_CONTENT_HOST_PATH}:/preview-content
+    - ${PREVIEW_CONTENT_HOST_PATH}:/preview-content:ro
     - ${LIVE_CONTENT_VOLUME_NAME}:/live-content
   links:
     - memcached
@@ -20,7 +20,7 @@ drop-cms-live: # live content
     DROPCMS_MEMCACHED_HOST: memcached
     DROPCMS_MEMCACHED_PREFIX: 'live.'
   volumes:
-    - ${LIVE_CONTENT_VOLUME_NAME}:/live-content
+    - ${LIVE_CONTENT_VOLUME_NAME}:/live-content:ro
   links:
     - memcached
   labels:
@@ -44,7 +44,7 @@ nginx: # password protection and HTTPS redirection for preview, server/client ca
     SECONDARY_LIVE_FQDN: ${SECONDARY_LIVE_FQDN}
   volumes:
     - /var/cache/nginx
-    - ${NGINX_DATA_HOST_PATH}:/etc/nginx/data
+    - ${NGINX_DATA_HOST_PATH}:/etc/nginx/data:ro
   links:
     - drop-cms-preview
     - drop-cms-live

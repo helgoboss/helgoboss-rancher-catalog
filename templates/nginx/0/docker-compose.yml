@@ -1,7 +1,7 @@
 nginx:
   image: nginx:latest
   volumes:
-    - ${NGINX_DATA_HOST_PATH}:/mnt/data
+    - ${NGINX_DATA_HOST_PATH}:/mnt/data:ro
   restart: always
   ports:
     - "80:80"
