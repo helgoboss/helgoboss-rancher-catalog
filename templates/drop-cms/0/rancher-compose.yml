@@ -41,10 +41,9 @@
     - variable: "CERT_PATH"
       label: "Path to certificate (without .key and .crt extension)"
       required: false
-      default: "/etc/nginx/data/..."
       type: "string"
     - variable: "NGINX_DATA_HOST_PATH"
       label: "Path on host reflecting /etc/nginx/data"
       required: true
-      default: "/mnt/syncthing/nginx/data"
+      default: "/mnt/syncthing/nginx"
       type: "string"
