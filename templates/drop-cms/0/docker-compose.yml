@@ -8,7 +8,7 @@ drop-cms-preview: # preview content
     DROPCMS_MEMCACHED_PREFIX: 'preview.'
   volumes:
     - ${PREVIEW_CONTENT_HOST_PATH}:/preview-content
-    - drop-cms-live-content:/live-content
+    - ${LIVE_CONTENT_VOLUME_NAME}:/live-content
   links:
     - memcached
   labels:
