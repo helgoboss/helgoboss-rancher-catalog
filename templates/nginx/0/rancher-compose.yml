@@ -7,4 +7,4 @@
       label: "Path on host reflecting nginx data (/mnt/data)"
       required: true
       type: "string"
-      default: "/mnt/syncthing/nginx/data"
+      default: "/mnt/syncthing/nginx"
