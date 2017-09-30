@@ -1,0 +1,19 @@
+.catalog:
+  name: "Drop CMS"
+  version: "v1.1"
+  description: "Drop CMS"
+  questions:
+    # Used for cache warming, redirect to www, volume names, Syncthing folder names
+    - variable: "DOMAIN_NAME"
+      label: "Domain name (without www, e.g. 'example.org')"
+      required: true
+      type: "string"
+    - variable: "REMOTE_SYNCTHING_DEVICE_ID"
+      label: "Remote Syncthing device ID (where to get the files from)"
+      required: true
+      type: "string"
+    - variable: "DROP_CMS_IMAGE_NAME"
+      label: "Drop CMS image name"
+      required: true
+      type: "string"
+      default: "helgoboss/drop-cms-fs-memcached"

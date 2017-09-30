@@ -1,0 +1,53 @@
+syncthing: # for syncing content
+  image: helgoboss/syncthing
+  environment:
+    REMOTE_DEVICE_ID: ${REMOTE_SYNCTHING_DEVICE_ID}
+    REMOTE_FOLDER_ID: ${DOMAIN_NAME}
+    REMOTE_FOLDER_MOUNT_PATH: /preview-content
+  volumes:
+    - ${DOMAIN_NAME}:/preview-content
+    - /root/.config/syncthing
+  restart: always
+  ports:
+    - "22000:22000"
+    - "21027:21027/udp"
+  labels:
+    io.rancher.container.pull_image: always
+drop-cms-preview: # preview content
+  image: ${DROP_CMS_IMAGE_NAME}
+  environment:
+    DROPCMS_ROOTDIR: '/preview-content'
+    DROPCMS_PUBLISH_ENABLED: 'true'
+    DROPCMS_PUBLISH_COMMAND: 'bash /root/publish.sh /live-content www.${DOMAIN_NAME}'
+    DROPCMS_MEMCACHED_HOST: memcached
+    DROPCMS_MEMCACHED_PREFIX: 'preview.'
+  volumes:
+    - ${DOMAIN_NAME}:/preview-content:ro
+    - ${DOMAIN_NAME}:/live-content
+  labels:
+    io.rancher.container.pull_image: always
+drop-cms-live: # live content
+  image: ${DROP_CMS_IMAGE_NAME}
+  environment:
+    DROPCMS_ROOTDIR: /live-content
+    DROPCMS_MEMCACHED_HOST: memcached
+    DROPCMS_MEMCACHED_PREFIX: 'live.'
+  volumes:
+    - ${DOMAIN_NAME}:/live-content:ro
+  labels:
+    io.rancher.container.pull_image: always
+memcached: # intra-cms caching
+  image: sylvainlasnier/memcached
+nginx: # password protection and HTTPS redirection for preview, server/client caching, error pages, domain mapping
+  image: helgoboss/drop-cms-nginx
+  restart: always
+  environment:
+    HTPASSWD_PATH: /preview-content/.preview/htpasswd
+    PREVIEW_FQDN: preview.${DOMAIN_NAME}
+    PRIMARY_LIVE_FQDN: www.${DOMAIN_NAME}
+    SECONDARY_LIVE_FQDN: ${DOMAIN_NAME}
+  volumes:
+    - /var/cache/nginx
+    - ${DOMAIN_NAME}:/preview-content:ro
+  labels:
+    io.rancher.container.pull_image: always
