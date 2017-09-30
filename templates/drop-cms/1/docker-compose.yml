@@ -5,7 +5,7 @@ syncthing: # for syncing content
     REMOTE_FOLDER_ID: ${DOMAIN_NAME}
     REMOTE_FOLDER_MOUNT_PATH: /preview-content
   volumes:
-    - ${DOMAIN_NAME}:/preview-content
+    - ${DOMAIN_NAME}-preview:/preview-content
     - /root/.config/syncthing
   restart: always
   ports:
@@ -22,8 +22,8 @@ drop-cms-preview: # preview content
     DROPCMS_MEMCACHED_HOST: memcached
     DROPCMS_MEMCACHED_PREFIX: 'preview.'
   volumes:
-    - ${DOMAIN_NAME}:/preview-content:ro
-    - ${DOMAIN_NAME}:/live-content
+    - ${DOMAIN_NAME}-preview:/preview-content:ro
+    - ${DOMAIN_NAME}-live:/live-content
   labels:
     io.rancher.container.pull_image: always
 drop-cms-live: # live content
@@ -33,7 +33,7 @@ drop-cms-live: # live content
     DROPCMS_MEMCACHED_HOST: memcached
     DROPCMS_MEMCACHED_PREFIX: 'live.'
   volumes:
-    - ${DOMAIN_NAME}:/live-content:ro
+    - ${DOMAIN_NAME}-live:/live-content:ro
   labels:
     io.rancher.container.pull_image: always
 memcached: # intra-cms caching
@@ -48,6 +48,6 @@ nginx: # password protection and HTTPS redirection for preview, server/client ca
     SECONDARY_LIVE_FQDN: ${DOMAIN_NAME}
   volumes:
     - /var/cache/nginx
-    - ${DOMAIN_NAME}:/preview-content:ro
+    - ${DOMAIN_NAME}-preview:/preview-content:ro
   labels:
     io.rancher.container.pull_image: always
