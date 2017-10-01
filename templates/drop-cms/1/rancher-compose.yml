@@ -3,7 +3,7 @@
   version: "v1.1"
   description: "Drop CMS"
   questions:
-    # Used for cache warming, redirect to www, volume names, Syncthing folder names
+    # Used for cache warming, redirect to www, Syncthing folder names
     - variable: "DOMAIN_NAME"
       label: "Domain name (without www, e.g. 'example.org')"
       required: true
