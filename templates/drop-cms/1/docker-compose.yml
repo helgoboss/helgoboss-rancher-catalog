@@ -14,8 +14,8 @@ services:
       - /root/.config/syncthing
     restart: always
     ports:
-      - "22000:22000"
-      - "21027:21027/udp"
+      - "22000"
+      - "21027/udp"
     labels:
       io.rancher.container.pull_image: always
       traefik.enable: "false"
